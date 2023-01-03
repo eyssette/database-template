@@ -112,3 +112,6 @@ internal
 *.tgz
 .eslintcache
 .svelte-kit
+
+# Build
+build
