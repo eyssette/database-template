@@ -1,11 +1,12 @@
 <script>
-	import {columnsToGroup,groupColumns,changeHeader,newHeader} from '../routes/config.js'
+	import {columnsToGroup,groupColumns,changeHeader,newHeader,historyColumnsClickDefault} from '../routes/config.js'
     import MarkResults from './MarkResults.svelte';
 	export let dataParsed;
 	export let textToSearch;
 	let dataTable;
 	let search_items
 	let sortColumns=false;
+	let historyColumnsClick=historyColumnsClickDefault
 
 	let headers;
 	let dataArray = Object.values(dataParsed);
@@ -17,10 +18,20 @@
 		headers=newHeader;
 	}
 	let rows = dataArray;
+	
 	function sortColumnOnClick(i) {
-		setTimeout(function() {
+		if (historyColumnsClick.includes(i)) {
+			let index = historyColumnsClick.indexOf(i);
+    		historyColumnsClick.splice(index, 1);
+			setTimeout(function() {
+		rows = rows.sort((a, b) => b[i].localeCompare(a[i]));
+		},10)
+		} else {
+			setTimeout(function() {
 		rows = rows.sort((a, b) => a[i].localeCompare(b[i]));
 		},10)
+		historyColumnsClick.push(i);
+		}
 		sortColumns=true;
 	}
 

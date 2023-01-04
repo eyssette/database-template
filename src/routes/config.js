@@ -28,3 +28,6 @@ export let newHeader=['Auteur·e','Texte'];
 
 /* Surligner les mots recherchés */
 export let markText=true;
+
+/* Si les données sont déjà triées en ordre ascendant pour une colonne, il faut l'indiquer ici */
+export let historyColumnsClickDefault=[0]
