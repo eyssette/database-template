@@ -1,5 +1,5 @@
 <script>
-	import {columnsToGroup,groupColumns,changeHeader,newHeader,historyColumnsClickDefault} from '../routes/config.js'
+	import {columnsToGroup,groupColumns,changeHeader,newHeader,historyColumnsClickDefault,dataNoHeader, tableCSS} from '../routes/config.js'
     import MarkResults from './MarkResults.svelte';
 	export let dataParsed;
 	export let textToSearch;
@@ -13,8 +13,12 @@
 	if (columnsToGroup) {
 		dataArray = groupColumns(dataArray);
 	}
-	headers = dataArray.shift()
-	if (changeHeader) {
+	if (dataNoHeader == false) {
+		headers = dataArray.shift()
+		if (changeHeader) {
+		headers=newHeader;
+		}
+	} else {
 		headers=newHeader;
 	}
 	let rows = dataArray;
@@ -41,16 +45,20 @@
 		search_items.forEach((search_item) => {
 			pattern = pattern + "(?=.*" + search_item + ")";
 		});
+		try {
 		let regex = new RegExp(pattern, 'i');
 		setTimeout(function() {
 		rows = dataArray.filter((row) => row.toString().toLowerCase().match(regex));
 		},10)
+		} catch(e) {
+			console.log("Invalid Regular Expression");
+			textToSearch==''
+		} 
 	} else {rows = dataArray}
-
 	
 </script>
 
-<table>
+<table class:one-column="{headers.length===1}" class="{tableCSS}">
 {#if headers}	
 	<thead>
 		<tr>
@@ -84,6 +92,7 @@
 		table-layout: auto;
 		width: 95%;
 		max-width: 1200px;
+		line-height:1.6em;
 	}
 
 	th {
@@ -137,4 +146,7 @@
 		left:5px;
 		top:-2px;
 	}
+
+	.one-column td, .one-column th {text-align:center; padding-left: 5vw; padding-right: 5vw;}
+	.small {max-width:800px;}
 </style>

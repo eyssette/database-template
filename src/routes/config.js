@@ -1,6 +1,6 @@
 export let title = "Sujets de dissertation donnés au baccalauréat";
 
-export let src = "https://raw.githubusercontent.com/eyssette/sujets-philosophie-bac/main/data/dissertations.tsv";
+export let src = "https://raw.githubusercontent.com/eyssette/sujets-philosophie/main/data/sujets-vrac.tsv";
 /* https://raw.githubusercontent.com/eyssette/textes-philo/main/data/textes-new.tsv */
 /* https://raw.githubusercontent.com/eyssette/sujets-philosophie-bac/main/data/dissertations.tsv */
 
@@ -23,11 +23,19 @@ export function groupColumns(arrInit) {
 }
 
 /* Pour changer le titre des colonnes  */
+export let dataNoHeader=true;
 export let changeHeader = false;
-export let newHeader=['Auteur·e','Texte'];
+export let newHeader=['Intitulé du sujet'];
+/* export let newHeader=['Auteur·e','Texte']; */
 
 /* Surligner les mots recherchés */
 export let markText=true;
 
 /* Si les données sont déjà triées en ordre ascendant pour une colonne, il faut l'indiquer ici */
 export let historyColumnsClickDefault=[0]
+
+export let tableCSS='small'
+
+/* Pour indiquer des conditions supplémentaires possibles (cases à cocher) avec le format suivant : intitulé de la condition, numéro de la colonne concernée, regex correspondante */
+export let useAdditionalConditions = false;
+export let additionalConditionsArray=[['Seulement des sujets avec une question','(?=.*\\?$)'],['Seulement des sujets sans question','(?=.*([A-zÀ-ÿ]|»|\\)|[0-9]|!|>)$)']];

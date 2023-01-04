@@ -8,7 +8,7 @@
 	  const response = await fetch(url);
 	  const csv = await response.text();
 	  dataParsed = await Papa.parse(csv, {
-						delimitersToGuess: ["\t","    "],
+						delimiter:"\t",
 						fastMode:true
 					}).data;
 	})

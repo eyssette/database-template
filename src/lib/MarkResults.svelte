@@ -13,10 +13,10 @@
     	}
 		if (text !='') {
 			markInstance = new Mark(dataTable);
-			search_items = text.split("+");
+			search_items = text.split("(")[0].split("+");
 			let i_search = 1;
 			search_items.forEach((search_item) => {
-				markInstance.mark(search_item, {
+				markInstance.mark(search_item.replace("^",""), {
 					"element": "span",
 					"className": "match" + i_search,
 					"accuracy": "complementary",
@@ -45,7 +45,7 @@
 </script>
 <style>
 	:global(.match1){
-  background: hsl(53, 100%, 90%);
+  background: hsl(53, 100%, 88%);
 }
 :global(.match2){
   background: hsl(197, 71%, 92%);
