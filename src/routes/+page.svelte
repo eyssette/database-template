@@ -2,15 +2,14 @@
 	import Papa from 'papaparse';
 	import Table from '../lib/Table.svelte'
 	import Search from '../lib/Search.svelte'
-	import {title, src, contentBeforeTable} from '../lib/config.js'
+	import file from '../assets/file.tsv?raw'
+	import {title, contentBeforeTable} from '../lib/config.js'
 	let headers;
 	let rows;
 	let textToSearch='';
 
 	async function fetchCsv() {
-		const response = await fetch(src);
-	  const csv = await response.text();
-	  const parse = await Papa.parse(csv, {
+	  const parse = await Papa.parse(file, {
 						delimiter:"\t",
 						fastMode:true
 					}).data; 

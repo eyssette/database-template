@@ -1,6 +1,6 @@
 export const title = "Sujets de dissertation donnés au baccalauréat";
 
-export const src = "https://raw.githubusercontent.com/eyssette/sujets-philosophie-bac/main/data/dissertations.tsv";
+/* export const src = "https://raw.githubusercontent.com/eyssette/sujets-philosophie-bac/main/data/dissertations.tsv"; */
 /* https://raw.githubusercontent.com/eyssette/textes-philo/main/data/textes-new.tsv */
 /* https://raw.githubusercontent.com/eyssette/sujets-philosophie-bac/main/data/dissertations.tsv */
 /* https://raw.githubusercontent.com/eyssette/sujets-philosophie/main/data/sujets-vrac.tsv */

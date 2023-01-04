@@ -72,7 +72,7 @@
 	{#each rows as row}
 		<tr>
 			{#each row as cell}
-				<td>{@html cell} </td>
+				<td>{@html cell}</td>
 			{/each}
 		</tr>
 	{/each}
