@@ -65,7 +65,7 @@
 	
 </script>
 
-<table bind:this={dataTable}>
+<table>
 {#if headers}	
 	<thead>
 		<tr>
@@ -75,7 +75,7 @@
 		</tr>
 	</thead>
 {/if}
-<tbody>
+<tbody bind:this={dataTable}>
 	{#each rows as row}
 		<tr>
 			{#each row as cell}
