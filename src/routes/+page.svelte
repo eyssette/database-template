@@ -1,29 +1,39 @@
 <script>
-	import ParseData from '../lib/ParseData.svelte'
-	let dataParsed;
+	import Papa from 'papaparse';
+	import Table from '../lib/Table.svelte'
+	import Search from '../lib/Search.svelte'
+	import {title, src, contentBeforeTable} from '../lib/config.js'
 	let headers;
 	let rows;
 	let textToSearch='';
-	import Table from '../lib/Table.svelte'
-	import Search from '../lib/Search.svelte'
-	import {title, src, contentBeforeTable} from './config.js'
+
+	async function fetchCsv() {
+		const response = await fetch(src);
+	  const csv = await response.text();
+	  const parse = await Papa.parse(csv, {
+						delimiter:"\t",
+						fastMode:true
+					}).data; 
+		return parse
+	}
+	let dataParsed = fetchCsv()
 </script>
 
-<ParseData url={src} bind:dataParsed/>
 
 <h1>{title}</h1>
 
-<div class="search">
-<Search bind:textToSearch/>
-<div class="contentBeforeTable">{@html contentBeforeTable}</div>
-</div>
-
-{#if dataParsed}
-	<Table {dataParsed} bind:textToSearch />
-{:else}
+{#await dataParsed}
 	<p><span class="loader"></span></p>
 	<p>Chargement des données. Merci de patienter.</p>
-{/if}
+{:then dataParsed}
+	<div class="search">
+	<Search bind:textToSearch/>
+	<div class="contentBeforeTable">{@html contentBeforeTable}</div>
+	</div>
+	<Table {dataParsed} bind:textToSearch />
+{:catch error}
+	<p style="color: red">{error.message}</p>
+{/await}
 
 <style>
 	:global(body) {font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; color: #333;}

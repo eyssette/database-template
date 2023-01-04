@@ -1,5 +1,5 @@
 <script>
-	import {columnsToGroup,groupColumns,changeHeader,newHeader,historyColumnsClickDefault,dataNoHeader, tableCSS} from '../routes/config.js'
+	import {columnsToGroup,groupColumns,changeHeader,newHeader,historyColumnsClickDefault,dataNoHeader, tableCSS} from './config.js'
     import MarkResults from './MarkResults.svelte';
 	export let dataParsed;
 	export let textToSearch;
@@ -79,7 +79,9 @@
 </tbody>
 </table>
 
+{#if textToSearch!==''}
 <MarkResults {dataTable} {textToSearch} bind:sortColumns/>
+{/if}
 
 <style>
 	table {

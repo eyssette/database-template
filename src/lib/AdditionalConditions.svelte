@@ -1,5 +1,5 @@
 <script>
-	import {additionalConditionsArray} from '../routes/config.js'
+	import {additionalConditionsArray} from './config.js'
 	export let textToSearch;
 	let conditionChecked=[];
 	$: additionalConditionsArray.forEach(

@@ -1,5 +1,5 @@
 <script>
-	import {markText} from '../routes/config.js'
+	import {markText} from './config.js'
 	import Mark from 'mark.js';
 	export let dataTable;
 	export let textToSearch;

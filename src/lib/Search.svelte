@@ -1,5 +1,5 @@
 <script>
-	import {contentAfterSearch, automaticSearch, useAdditionalConditions} from '../routes/config.js'
+	import {contentAfterSearch, automaticSearch, useAdditionalConditions} from './config.js'
 	import AdditionalConditions from './AdditionalConditions.svelte';
 	import { onMount } from 'svelte';
 	export let textToSearch='';
