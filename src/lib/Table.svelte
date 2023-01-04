@@ -1,32 +1,11 @@
 <script>
-	import {columnsToGroup,groupColumns,changeHeader,newHeader,markText} from '../routes/config.js'
-	import Mark from 'mark.js';
+	import {columnsToGroup,groupColumns,changeHeader,newHeader} from '../routes/config.js'
+    import MarkResults from './MarkResults.svelte';
 	export let dataParsed;
 	export let textToSearch;
-	let markInstance;
 	let dataTable;
 	let search_items
-	
-	
-	function markMatches(text) {
-    	if (markInstance) {
-      		markInstance.unmark();
-    	}
-		if (text !='') {
-			markInstance = new Mark(dataTable);
-			search_items = text.split("+");
-			let i_search = 1;
-			search_items.forEach((search_item) => {
-				markInstance.mark(search_item, {
-					"element": "span",
-					"className": "match" + i_search,
-					"accuracy": "complementary",
-					"separateWordSearch": false
-				});
-				i_search = i_search + 1;
-			});
-		}
-  	}
+	let sortColumns=false;
 
 	let headers;
 	let dataArray = Object.values(dataParsed);
@@ -39,16 +18,11 @@
 	}
 	let rows = dataArray;
 	function sortColumnOnClick(i) {
-		markMatches('');
 		setTimeout(function() {
 		rows = rows.sort((a, b) => a[i].localeCompare(b[i]));
 		},10)
+		sortColumns=true;
 	}
-	$: if(markText) {
-			setTimeout(function() {
-				markMatches(textToSearch)
-   			}, 20)
-		}
 
 	$: if (textToSearch!=='') {
 		search_items = textToSearch.split("+");
@@ -85,6 +59,8 @@
 	{/each}
 </tbody>
 </table>
+
+<MarkResults {dataTable} {textToSearch} bind:sortColumns/>
 
 <style>
 	table {
@@ -150,16 +126,4 @@
 		left:5px;
 		top:-2px;
 	}
-	:global(.match1){
-  background: hsl(53, 100%, 90%);
-}
-:global(.match2){
-  background: hsl(197, 71%, 92%);
-}
-:global(.match3){
-  background: hsl(150, 86%, 92%);
-}
-:global(.match4), :global(.match5), :global(.match6){
-  background: hsl(256, 85%, 93%);
-}
 </style>
