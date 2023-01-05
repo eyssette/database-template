@@ -1,21 +1,23 @@
 <script>
-	import {additionalConditionsArray} from './config.js'
+	import {
+		additionalConditionsArray
+	} from './config.js';
 	export let textToSearch;
-	let conditionChecked=[];
+	let conditionChecked = [];
 	$: additionalConditionsArray.forEach(
-		(condition,index) => {
-			if (conditionChecked[index]==true) {
-				textToSearch=textToSearch+condition[1];
+		(condition, index) => {
+			if (conditionChecked[index] == true) {
+				textToSearch = textToSearch + condition[1];
 			} else {
-				textToSearch=textToSearch.replace(condition[1],'');
+				textToSearch = textToSearch.replace(condition[1], '');
 			}
 		}
 	)
 </script>
 
 {#each additionalConditionsArray as condition,i}
-<p><label for="condition-{i}">{condition[0]} </label> :
-<input type="checkbox" id="condition-{i}" name="condition-{i}" bind:checked={ conditionChecked[i]}></p>
+	<p><label for="condition-{i}">{condition[0]} </label> :
+	<input type="checkbox" id="condition-{i}" name="condition-{i}" bind:checked={ conditionChecked[i]}></p>
 {/each}
 
 <style>
