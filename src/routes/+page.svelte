@@ -20,7 +20,7 @@
 		}).data;
 		return parse;
 	}
-	let dataParsed = fetchCsv();
+	const dataParsed = fetchCsv();
 </script>
 
 
