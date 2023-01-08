@@ -72,7 +72,7 @@
 		<thead>
 			<tr>
 				{#each headers as header, i}
-						<th data-key="{header}" on:click={() => sortColumnOnClick(i)}>{@html header}<span>&updownarrow;</span></th>
+						<th data-key="{header}" on:click={() => sortColumnOnClick(i)}>{@html header}</th>
 				{/each}
 			</tr>
 		</thead>
@@ -88,16 +88,14 @@
 	</tbody>
 </table>
 
-{#if textToSearch!==''}
-	<MarkResults {dataTable} {textToSearch} bind:sortColumns/>
-{/if}
+<MarkResults {dataTable} {textToSearch} bind:sortColumns/>
 
 <style>
 	table {
 		text-align: justify;
 		border-collapse: separate;
 		border-spacing: 0;
-		border: 2px solid #ed1c40;
+		border: 2px solid #6a0012;
 		margin: 50px auto;
 		border-radius: .25rem;
 		table-layout: auto;
@@ -110,9 +108,16 @@
 		cursor: pointer;
 		font-weight: 600;
 	}
+	th:after {
+		content: "↕";
+		font-size: 0.7em;
+		position: relative;
+		left: 5px;
+		top: -2px;
+	}
 
 	thead tr:first-child {
-		background: #ed1c40;
+		background: #6a0012;
 		color: #fff;
 		border: none;
 	}
@@ -149,13 +154,6 @@
 	td {
 		padding-left: 1vw;
 		padding-right: 1vw;
-	}
-
-	th span:last-child {
-		font-size: 0.7em;
-		position: relative;
-		left: 5px;
-		top: -2px;
 	}
 
 	.one-column td,
