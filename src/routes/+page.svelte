@@ -7,20 +7,39 @@
 		contentBeforeTable,
 		src
 	} from '../lib/config.js';
-	let headers;
-	let rows;
 	let textToSearch = '';
+	let parsedData=[];
+	let promises = [];
 
-	async function fetchCsv() {
-		const response = await fetch(src);
-		const csv = await response.text();
-		const parse = await Papa.parse(csv, {
-			delimiter: "\t",
-			fastMode: true
-		}).data;
-		return parse;
+	for (const url of src) {
+  		promises.push(fetch(url));
 	}
+	
+	async function fetchCsv() {
+		return await Promise.all(
+			promises
+		).then(function (responses) {
+			return Promise.all(responses.map(function (response) {
+				return response.text();
+			}));
+		}).then(function (data) {
+			data.forEach(
+				(csvData) => {
+					const parse = Papa.parse(csvData, {
+						delimiter: "\t",
+						fastMode: true
+					}).data;
+					parsedData = [...parsedData, ...parse];
+				}
+			)
+			return parsedData
+		}).catch(function (error) {
+			console.log(error);
+		});
+	}
+
 	const dataParsed = fetchCsv();
+	
 </script>
 
 
