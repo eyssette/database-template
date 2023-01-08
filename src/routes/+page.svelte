@@ -18,20 +18,22 @@
 	async function fetchCsv() {
 		const responses = await Promise.all(promises);
 		const data = await Promise.all(responses.map(response => response.text()));
+		let headers;
 		for (const csvData of data) {
 			const parse = Papa.parse(csvData, {
 				delimiter: '\t',
 				fastMode: true,
 			}).data;
+			headers = parse.shift();
 			parsedData = [...parsedData, ...parse];
 		}
+		parsedData.unshift(headers);
 		return parsedData;
 	}
 
 	const dataParsed = fetchCsv();
 	
 </script>
-
 
 <h1>{title}</h1>
 

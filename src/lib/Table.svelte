@@ -1,7 +1,8 @@
 <script>
 	import {
-		columnsToGroup,
-		groupColumns,
+		reorganizeData,
+		reorganizeDataIfSmallScreen,
+		reorganizeDataFunction,
 		changeHeader,
 		newHeader,
 		historyColumnsClickDefault,
@@ -16,10 +17,12 @@
 	let sortColumns = false;
 	let historyColumnsClick = historyColumnsClickDefault;
 
+    const innerWidth = window.innerWidth;
+
 	let headers;
 	let dataArray = Object.values(dataParsed);
-	if (columnsToGroup) {
-		dataArray = groupColumns(dataArray);
+	if (reorganizeData || (reorganizeDataIfSmallScreen && innerWidth<=800)) {
+		dataArray = reorganizeDataFunction(dataArray);
 	}
 	if (dataNoHeader == false) {
 		headers = dataArray.shift();

@@ -12,15 +12,14 @@ export const contentAfterSearch = 'Vous pouvez mettre par exemple "lib+consc" po
 /* Si la base de données est trop importante, il faut que la recherche ne se déclenche pas automatiquement, mais seulement en appuyant sur Entrée */
 export const automaticSearch = true;
 
-/* Pour regrouper certaines colonnes */
-export const columnsToGroup = false;
-export function groupColumns(arrInit) {
-	let newArr = [];
-	arrInit.forEach(element => {
-		/* Un exemple de regroupement */
-		newArr.push([element[0], element[2] + '<br/>' + element[1] + (element[3] ? element[3] : '')]);
-	});
-	return newArr;
+/* Pour réorganiser les données (notamment pour faire une version différente sur mobile) */
+export const reorganizeData = false;
+export const reorganizeDataIfSmallScreen = true;
+export function reorganizeDataFunction(arrInit) {
+	/* Un exemple qui ne garde que certaines colonnes */
+	return arrInit.map(element => [element[0], element[1], element[4]]);
+	/* Un exemple de regroupement */
+	/* return arrInit.map(element => [element[0],  element[2] + '<br/>' + element[1] + (element[3] ? element[3] : '')]);  */
 }
 
 /* Pour changer le titre des colonnes  */
