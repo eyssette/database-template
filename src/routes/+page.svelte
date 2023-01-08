@@ -8,34 +8,24 @@
 		src
 	} from '../lib/config.js';
 	let textToSearch = '';
-	let parsedData=[];
+	let parsedData = [];
 	let promises = [];
 
 	for (const url of src) {
-  		promises.push(fetch(url));
+		promises.push(fetch(url));
 	}
-	
+
 	async function fetchCsv() {
-		return await Promise.all(
-			promises
-		).then(function (responses) {
-			return Promise.all(responses.map(function (response) {
-				return response.text();
-			}));
-		}).then(function (data) {
-			data.forEach(
-				(csvData) => {
-					const parse = Papa.parse(csvData, {
-						delimiter: "\t",
-						fastMode: true
-					}).data;
-					parsedData = [...parsedData, ...parse];
-				}
-			)
-			return parsedData
-		}).catch(function (error) {
-			console.log(error);
-		});
+		const responses = await Promise.all(promises);
+		const data = await Promise.all(responses.map(response => response.text()));
+		for (const csvData of data) {
+			const parse = Papa.parse(csvData, {
+				delimiter: '\t',
+				fastMode: true,
+			}).data;
+			parsedData = [...parsedData, ...parse];
+		}
+		return parsedData;
 	}
 
 	const dataParsed = fetchCsv();
