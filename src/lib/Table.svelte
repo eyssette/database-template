@@ -7,7 +7,9 @@
 		newHeader,
 		historyColumnsClickDefault,
 		dataNoHeader,
-		tableCSS
+		tableCSS,
+		longTable,
+		automaticSearch
 	} from './config.js';
 	import MarkResults from './MarkResults.svelte';
 	export let dataParsed;
@@ -17,11 +19,11 @@
 	let sortColumns = false;
 	let historyColumnsClick = historyColumnsClickDefault;
 
-    const innerWidth = window.innerWidth;
+	const innerWidth = window.innerWidth;
 
 	let headers;
 	let dataArray = Object.values(dataParsed);
-	if (reorganizeData || (reorganizeDataIfSmallScreen && innerWidth<=800)) {
+	if (reorganizeData || (reorganizeDataIfSmallScreen && innerWidth <= 800)) {
 		dataArray = reorganizeDataFunction(dataArray);
 	}
 	if (dataNoHeader == false) {
@@ -33,10 +35,13 @@
 		headers = newHeader;
 	}
 	let rows = dataArray;
+	let pattern = '';
+	let regex;
+	let previoustextToSearch = '';
 
 	function sortColumnOnClick(i) {
 		if (historyColumnsClick.includes(i)) {
-			let index = historyColumnsClick.indexOf(i);
+			const index = historyColumnsClick.indexOf(i);
 			historyColumnsClick.splice(index, 1);
 			setTimeout(function () {
 				rows = rows.sort((a, b) => b[i].localeCompare(a[i]));
@@ -50,24 +55,35 @@
 		sortColumns = true;
 	}
 
-	$: if (textToSearch !== '') {
-		search_items = textToSearch.split("+");
-		let pattern = "";
-		search_items.forEach((search_item) => {
-			pattern = pattern + "(?=.*" + search_item + ")";
-		});
-		try {
-			let regex = new RegExp(pattern, 'i');
-			setTimeout(function () {
-				rows = dataArray.filter((row) => row.toString().toLowerCase().match(regex));
-			}, 10)
-		} catch (e) {
-			console.log("Invalid Regular Expression");
-			textToSearch == '';
-		}
-	} else {
-		rows = dataArray;
+	function searchFunction(arr, target) {
+		return target.every((v) => arr.includes(v));
 	}
+
+	$: if (textToSearch !== '') {
+			pattern = '';
+			search_items = textToSearch.toLowerCase().split("+");
+			if (longTable === false) {
+				search_items.forEach((search_item) => {
+					pattern = pattern + "(?=.*" + search_item + ")";
+				});
+				regex = new RegExp(pattern, 'i');
+				try {
+					setTimeout(function () {
+						rows = dataArray.filter((row) => row.toString().toLowerCase().match(regex));
+					}, 5)
+				} catch (e) {
+					console.log("Invalid Regular Expression");
+					textToSearch == '';
+				}
+			} else {
+					setTimeout(function () {
+						rows = dataArray.filter((row) => searchFunction(row.toString().toLowerCase(), search_items));
+						previoustextToSearch = textToSearch;
+					}, 5)
+				}
+			} else {
+				rows = dataArray;
+			}
 </script>
 
 <table class:one-column="{headers.length===1}" class="{tableCSS}">
@@ -81,13 +97,25 @@
 		</thead>
 	{/if}
 	<tbody bind:this={dataTable}>
-		{#each rows as row}
-			<tr>
-				{#each row as cell}
-					<td>{@html cell}</td>
-				{/each}
-			</tr>
-		{/each}
+		{#if longTable==true && textToSearch==''}
+			<tr><td colspan="{headers.length}" class="info-search">Utilisez l'outil de recherche ci-dessus : les textes qui correspondent à la recherche s'afficheront ci-dessous</td></tr>
+		{:else}
+			{#if previoustextToSearch != textToSearch && automaticSearch === false}
+				<tr><td colspan="{headers.length}"><p><span class="loader"></span></p><p class="info-search">Recherche en cours</p></td></tr>
+			{:else}
+				{#if rows.length !=0}
+					{#each rows as row}
+						<tr>
+							{#each row as cell}
+								<td>{@html cell}</td>
+							{/each}
+						</tr>
+					{/each}
+				{:else}
+					<tr><td colspan="{headers.length}" class="info-search">Aucun résultat trouvé</td></tr>
+				{/if}
+			{/if}
+		{/if}
 	</tbody>
 </table>
 
@@ -168,5 +196,10 @@
 
 	.small {
 		max-width: 800px;
+	}
+
+	.info-search {
+		text-align:center;
+		padding:2em!important;
 	}
 </style>

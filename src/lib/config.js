@@ -1,6 +1,7 @@
 export const title = "Sujets de dissertation donnés au baccalauréat";
 
-export const src = ["https://raw.githubusercontent.com/eyssette/sujets-philosophie-bac/main/data/dissertations.tsv"];
+export const src = ['https://raw.githubusercontent.com/eyssette/sujets-philosophie-bac/main/data/dissertations.tsv']
+/* export const src = ['https://raw.githubusercontent.com/eyssette/textes-philo/main/data/textes-FINAL.tsv', 'https://raw.githubusercontent.com/eyssette/textes-philo/main/data/textes-new.tsv'] */
 /* https://raw.githubusercontent.com/eyssette/textes-philo/main/data/textes-new.tsv */
 /* https://raw.githubusercontent.com/eyssette/sujets-philosophie-bac/main/data/dissertations.tsv */
 /* https://raw.githubusercontent.com/eyssette/sujets-philosophie/main/data/sujets-vrac.tsv */
@@ -11,6 +12,7 @@ export const contentAfterSearch = 'Vous pouvez mettre par exemple "lib+consc" po
 
 /* Si la base de données est trop importante, il faut que la recherche ne se déclenche pas automatiquement, mais seulement en appuyant sur Entrée */
 export const automaticSearch = true;
+export const longTable = false;
 
 /* Pour réorganiser les données (notamment pour faire une version différente sur mobile) */
 export const reorganizeData = false;
@@ -25,8 +27,8 @@ export function reorganizeDataFunction(arrInit) {
 /* Pour changer le titre des colonnes  */
 export const dataNoHeader = false;
 export const changeHeader = false;
-export const newHeader = ['Intitulé du sujet'];
-/* export let newHeader=['Auteur·e','Texte']; */
+/* export const newHeader=['Auteur·e','Texte']; */
+/* export const newHeader = ['Intitulé du sujet']; */
 
 /* Surligner les mots recherchés */
 export const markText = true;

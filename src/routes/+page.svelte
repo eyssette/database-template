@@ -5,7 +5,8 @@
 	import {
 		title,
 		contentBeforeTable,
-		src
+		src,
+		dataNoHeader
 	} from '../lib/config.js';
 	let textToSearch = '';
 	let parsedData = [];
@@ -14,6 +15,7 @@
 	for (const url of src) {
 		promises.push(fetch(url));
 	}
+
 
 	async function fetchCsv() {
 		const responses = await Promise.all(promises);
@@ -24,7 +26,7 @@
 				delimiter: '\t',
 				fastMode: true,
 			}).data;
-			headers = parse.shift();
+			dataNoHeader ? headers = [] : headers = parse.shift();
 			parsedData = [...parsedData, ...parse];
 		}
 		parsedData.unshift(headers);
@@ -32,7 +34,7 @@
 	}
 
 	const dataParsed = fetchCsv();
-	
+
 </script>
 
 <h1>{title}</h1>
@@ -74,7 +76,7 @@
 		font-size: 0.8em;
 	}
 
-	.loader {
+	:global(.loader) {
 		border: 16px solid #f3f3f3;
 		border-top: 16px solid #3498db;
 		border-radius: 50%;
