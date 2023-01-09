@@ -8,9 +8,11 @@
 		historyColumnsClickDefault,
 		dataNoHeader,
 		tableCSS,
-		desactivateRegex,
+		desactivateRegexDefault,
 		automaticSearch,
-		scoreDisplay
+		scoreDisplay,
+		textToSearchDefaultSmallScreen,
+		textToSearchDefault
 	} from './config.js';
 	import MarkResults from './MarkResults.svelte';
 	export let dataParsed;
@@ -27,6 +29,8 @@
 	if (reorganizeData || (reorganizeDataIfSmallScreen && innerWidth <= 800)) {
 		dataArray = reorganizeDataFunction(dataArray);
 	}
+	if (innerWidth <=600) {textToSearch=textToSearchDefaultSmallScreen;}
+	if (innerWidth >600 && automaticSearch == true) {textToSearch=textToSearchDefault;}
 	if (dataNoHeader == false) {
 		headers = dataArray.shift();
 		if (changeHeader) {
@@ -107,12 +111,13 @@
 	$: if (textToSearch !== '' && previoustextToSearch !== textToSearch) {
 		pattern = '';
 		search_items = textToSearch.toLowerCase().split("+");
-		if (desactivateRegex === false) {
+		if (desactivateRegexDefault === false) {
 			search_items.forEach((search_item) => {
 				pattern = pattern + "(?=.*" + search_item + ")";
 			});
-			regex = new RegExp(pattern, 'i');
+			
 			try {
+				regex = new RegExp(pattern, 'i');
 				/* setTimeout(function () { */
 				rows = dataArray.filter((row) => row.toString().toLowerCase().match(regex));
 				previoustextToSearch = textToSearch;
@@ -176,12 +181,19 @@
 		</thead>
 	{/if}
 	<tbody bind:this={dataTable}>
-		{#if desactivateRegex==true && textToSearch==''}
+		{#if desactivateRegexDefault==true && textToSearch==''}
 			<tr><td colspan="{headersLength}" class="info-search">Utilisez l'outil de recherche ci-dessus : les textes qui correspondent à la recherche s'afficheront ci-dessous</td></tr>
 		{:else}
 			{#if previoustextToSearch != textToSearch && automaticSearch === false}
 				<tr><td colspan="{headersLength}"><p><span class="loader"></span></p><p class="info-search">Recherche en cours</p></td></tr>
 			{:else}
+				{#if innerWidth <=600 && textToSearch==textToSearchDefaultSmallScreen && automaticSearch === true}
+					<tr><td colspan="{headersLength}" class="info-search">Sur un petit écran, seule une partie des données s'affiche par défaut. Utilisez le moteur de recherche ci-dessus pour trouver ce qui vous intéresse.</td></tr>
+				{/if}
+				{#if innerWidth>600 && automaticSearch === true && textToSearch==textToSearchDefault}
+					<tr><td colspan="{headersLength}" class="info-search"><strong>Par défaut, seule une partie des données s'affiche.</strong><br/>Utilisez le moteur de recherche ci-dessus  pour trouver ce qui vous intéresse.
+					<br>Ou cliquez sur : <button on:click={()=>textToSearch=''}>Voir toutes les données</button></td></tr>
+				{/if}
 				{#if rows.length !=0}
 					{#each rows as row}
 						<tr>

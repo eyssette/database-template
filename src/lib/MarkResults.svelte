@@ -9,13 +9,20 @@
 	let markInstance;
 	let search_items;
 
+	const regexSplit = new RegExp(/\+|\|/);
+
 	function markMatches(text) {
 		if (markInstance) {
 			markInstance.unmark();
 		}
 		if (text != '') {
 			markInstance = new Mark(dataTable);
-			search_items = text.split("(")[0].split("+");
+			try {
+				search_items = text.split("(")[0].split(regexSplit);
+			} catch (e) {
+				console.log("Invalid Regular Expression");
+				search_items = text.split("(")[0].split('+');
+			}
 			search_items.forEach((search_item, index) => {
 				markInstance.mark(search_item.replace("^", ""), {
 					"element": "span",

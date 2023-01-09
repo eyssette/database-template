@@ -16,7 +16,6 @@
 		promises.push(fetch(url));
 	}
 
-
 	async function fetchCsv() {
 		const responses = await Promise.all(promises);
 		const data = await Promise.all(responses.map(response => response.text()));
@@ -65,7 +64,7 @@
 	}
 
 	.search {
-		max-width: 800px;
+		max-width: 960px;
 		margin: auto;
 		width: 80%;
 		text-align: center;
