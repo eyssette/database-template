@@ -9,7 +9,8 @@
 		dataNoHeader,
 		tableCSS,
 		desactivateRegex,
-		automaticSearch
+		automaticSearch,
+		scoreDisplay
 	} from './config.js';
 	import MarkResults from './MarkResults.svelte';
 	export let dataParsed;
@@ -45,15 +46,19 @@
 			const index = historyColumnsClick.indexOf(i);
 			historyColumnsClick.splice(index, 1);
 			/* setTimeout(function () { */
-				rows = rows.sort((a, b) => b[i].localeCompare(a[i]));
+			rows = rows.sort((a, b) => b[i].toString().localeCompare(a[i].toString(), "fr", {
+				numeric: true
+			}));
 			/* },5) */
 		} else {
 			/* setTimeout(function () { */
-				rows = rows.sort((a, b) => a[i].localeCompare(b[i]));
-				historyColumnsClick.push(i);
+			rows = rows.sort((a, b) => a[i].toString().localeCompare(b[i].toString(), "fr", {
+				numeric: true
+			}));
+			historyColumnsClick.push(i);
 			/* },5) */
 		}
-		sortColumns=true;
+		sortColumns = true;
 	}
 
 	function searchFunction(string, itemsToSearch) {
@@ -109,8 +114,8 @@
 			regex = new RegExp(pattern, 'i');
 			try {
 				/* setTimeout(function () { */
-					rows = dataArray.filter((row) => row.toString().toLowerCase().match(regex));
-					previoustextToSearch = textToSearch;
+				rows = dataArray.filter((row) => row.toString().toLowerCase().match(regex));
+				previoustextToSearch = textToSearch;
 				/* }, 5) */
 			} catch (e) {
 				console.log("Invalid Regular Expression");
@@ -119,30 +124,36 @@
 		} else {
 			/* rows = dataArray.filter((row) => searchFunction(row.toString().toLowerCase(), search_items)); */
 			setTimeout(function () {
-			rows = dataArray;
-			for (const row of rows) {
-				const searchResults = searchFunction(row.toString().toLowerCase(), search_items)
-				if (searchResults) {
-					rowsFiltered = [...rowsFiltered, row]
+				rows = dataArray;
+				for (const row of rows) {
+					const searchResults = searchFunction(row.toString().toLowerCase(), search_items)
+					if (searchResults) {
+						rowsFiltered = [...rowsFiltered, row]
+					}
 				}
-			}
+				if (scoreDisplay === true) {
+					for (const row of rowsFiltered) {
+						const score = occurencesMultiples(search_items, row.toString().toLowerCase());
+						const rowN = [...row, score];
+						rowsFilteredAndSorted = [...rowsFilteredAndSorted, rowN];
+					}
+					rowsFilteredAndSorted = rowsFilteredAndSorted.sort((a, b) => {
+						return b[headersLength] -
+							a[headersLength]
+					})
+					rows = rowsFilteredAndSorted
+				} else {
+					rows = rowsFiltered
+				}
 
-			for (const row of rowsFiltered) {
-				const score = occurencesMultiples(search_items, row.toString().toLowerCase());
-				const rowN = [...row, score];
-				rowsFilteredAndSorted = [...rowsFilteredAndSorted, rowN];
-			}
-			rowsFilteredAndSorted = rowsFilteredAndSorted.sort((a, b) => {
-				return b[headersLength] -
-					a[headersLength]
-			})
-			rows = rowsFilteredAndSorted.map(function (val) {
-				return val.slice(0, -1);
-			});
-			previoustextToSearch = textToSearch;
-			rowsFiltered = [];
-			rowsFilteredAndSorted = [];
-		},5)
+
+				/* rows = rowsFilteredAndSorted.map(function (val) {
+					return val.slice(0, -1);
+				}); */
+				previoustextToSearch = textToSearch;
+				rowsFiltered = [];
+				rowsFilteredAndSorted = [];
+			}, 5)
 		}
 	} else {
 		if (textToSearch == '') {
@@ -158,6 +169,9 @@
 				{#each headers as header, i}
 						<th data-key="{header}" on:click={() => sortColumnOnClick(i)}>{@html header}</th>
 				{/each}
+				{#if scoreDisplay === true && automaticSearch === false}
+					<th on:click={() => sortColumnOnClick(headersLength)}>Score</th>
+				{/if}
 			</tr>
 		</thead>
 	{/if}

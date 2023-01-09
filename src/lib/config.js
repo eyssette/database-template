@@ -10,9 +10,10 @@ export const contentBeforeTable = 'Site créé par <a href="http://eyssette.gith
 
 export const contentAfterSearch = 'Vous pouvez mettre par exemple "lib+consc" pour rechercher tous les sujets qui contiennent "lib" (pour "liberté", "libération", "libérer"…) et qui contiennent "consc" (pour "conscient", "conscience", "inconscient" …)';
 
-/* Si la base de données est trop importante, il faut que la recherche ne se déclenche pas automatiquement, mais seulement en appuyant sur Entrée */
+/* Si la base de données est trop importante, il faut que la recherche ne se déclenche pas automatiquement, mais seulement en appuyant sur Entrée, et il faut désactiver l'utilisation d'une regex. On peut également choisir de calculer un score de pertinence ou non. */
 export const automaticSearch = true;
-export const longTable = false;
+export const desactivateRegex = false;
+export const scoreDisplay = false;
 
 /* Pour réorganiser les données (notamment pour faire une version différente sur mobile) */
 export const reorganizeData = false;
@@ -27,7 +28,7 @@ export function reorganizeDataFunction(arrInit) {
 /* Pour changer le titre des colonnes  */
 export const dataNoHeader = false;
 export const changeHeader = false;
-/* export const newHeader=['Auteur·e','Texte']; */
+export const newHeader=['Auteur·e','Texte'];
 /* export const newHeader = ['Intitulé du sujet']; */
 
 /* Surligner les mots recherchés */
