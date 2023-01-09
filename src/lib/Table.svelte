@@ -8,7 +8,7 @@
 		historyColumnsClickDefault,
 		dataNoHeader,
 		tableCSS,
-		longTable,
+		desactivateRegex,
 		automaticSearch
 	} from './config.js';
 	import MarkResults from './MarkResults.svelte';
@@ -59,10 +59,51 @@
 		return target.every((v) => arr.includes(v));
 	}
 
+	/** Function that count occurrences of a substring in a string;
+ * @param {String} string               The string
+ * @param {String} subString            The sub string to search for
+ * @param {Boolean} [allowOverlapping]  Optional. (Default:false)
+ *
+ * @author Vitim.us https://gist.github.com/victornpb/7736865
+ * @see Unit Test https://jsfiddle.net/Victornpb/5axuh96u/
+ * @see https://stackoverflow.com/a/7924240/938822
+ */
+/* function occurrences(string, subString, allowOverlapping) {
+
+string += "";
+subString += "";
+if (subString.length <= 0) return (string.length + 1);
+
+var n = 0,
+	pos = 0,
+	step = allowOverlapping ? 1 : subString.length;
+
+while (true) {
+	pos = string.indexOf(subString, pos);
+	if (pos >= 0) {
+		++n;
+		pos += step;
+	} else break;
+}
+return n;
+}
+
+function occurencesMultiples(arr,string) {
+	return (arr.reduce(function (accumulator, currentValue) {
+		const occurencesNumber = occurrences(string,currentValue,false);
+		return accumulator + occurencesNumber;
+	}, 0));
+} */
+
+/* .sort(function (a, b) {
+							occA = occurencesMultiples(search_items,a[4].toLowerCase());
+							occB = occurencesMultiples(search_items,b[4].toLowerCase());
+							return (occA - occB)}); */
+
 	$: if (textToSearch !== '') {
 			pattern = '';
 			search_items = textToSearch.toLowerCase().split("+");
-			if (longTable === false) {
+			if (desactivateRegex === false) {
 				search_items.forEach((search_item) => {
 					pattern = pattern + "(?=.*" + search_item + ")";
 				});
@@ -74,12 +115,12 @@
 				} catch (e) {
 					console.log("Invalid Regular Expression");
 					textToSearch == '';
-				}
+				}				
 			} else {
 					setTimeout(function () {
-						rows = dataArray.filter((row) => searchFunction(row.toString().toLowerCase(), search_items));
+						rows = dataArray.filter((row) => searchFunction(row.toString().toLowerCase(), search_items))
 						previoustextToSearch = textToSearch;
-					}, 5)
+					}, 5)						
 				}
 			} else {
 				rows = dataArray;
@@ -97,7 +138,7 @@
 		</thead>
 	{/if}
 	<tbody bind:this={dataTable}>
-		{#if longTable==true && textToSearch==''}
+		{#if desactivateRegex==true && textToSearch==''}
 			<tr><td colspan="{headers.length}" class="info-search">Utilisez l'outil de recherche ci-dessus : les textes qui correspondent à la recherche s'afficheront ci-dessous</td></tr>
 		{:else}
 			{#if previoustextToSearch != textToSearch && automaticSearch === false}
