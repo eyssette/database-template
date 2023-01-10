@@ -41,7 +41,7 @@ export let historyColumnsClickDefault = [0];
 export const tableCSS = '';
 /* export let tableCSS='small' */
 
-/* Pour indiquer des conditions supplémentaires possibles (cases à cocher) avec le format suivant : intitulé de la condition, regex correspondante */
+/* Pour indiquer des conditions supplémentaires possibles (cases à cocher) avec le format suivant : intitulé de la condition, regex correspondante. Les conditions supplémentaires ne sont possibles que si desactivateRegexDefault = false */
 export const useAdditionalConditions = true;
 export const additionalConditionsArray = [
 	/* ['Seulement des sujets avec une question', '(?=.*\\?$)'],
