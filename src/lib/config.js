@@ -35,6 +35,7 @@ export const newHeader = [];
 
 /* Pour que certaines colonnes s'affichent en plus petit */
 export const smallColumns = [3,4]
+export const smallColumnsIfSmallScreen = [2]
 
 /* Surligner les mots recherchés */
 export const markText = true;

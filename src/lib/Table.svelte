@@ -14,7 +14,8 @@
 		textToSearchDefaultSmallScreen,
 		textToSearchDefault,
 		useAdditionalConditions,
-		smallColumns
+		smallColumns,
+		smallColumnsIfSmallScreen
 	} from './config.js';
 	import {
 		searchFunction,
@@ -164,7 +165,7 @@
 					{#each rows as row}
 						<tr>
 							{#each row as cell,i}
-								<td class:small="{smallColumns.includes(i+1)}">{@html cell}</td>
+								<td class:small="{innerWidth<=600 ? smallColumnsIfSmallScreen.includes(i+1) : smallColumns.includes(i+1)}">{@html cell}</td>
 							{/each}
 						</tr>
 					{/each}
@@ -271,5 +272,11 @@
 		text-align: center;
 		font-size: 0.9em;
 		margin-bottom:3em;
+	}
+
+	@media screen and (max-width:600px) {
+		table {
+			font-size:0.9em;
+		}
 	}
 </style>
