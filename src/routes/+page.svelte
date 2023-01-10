@@ -4,7 +4,6 @@
 	import Search from '../lib/Search.svelte';
 	import {
 		title,
-		contentBeforeTable,
 		src,
 		dataNoHeader
 	} from '../lib/config.js';
@@ -44,7 +43,6 @@
 {:then dataParsed}
 	<div class="search">
 		<Search bind:textToSearch/>
-		<div class="contentBeforeTable">{@html contentBeforeTable}</div>
 	</div>
 	<Table {dataParsed} bind:textToSearch />
 {:catch error}
@@ -69,10 +67,6 @@
 		width: 80%;
 		text-align: center;
 		font-size: 0.9em;
-	}
-
-	.contentBeforeTable {
-		font-size: 0.8em;
 	}
 
 	:global(.loader) {

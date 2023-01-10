@@ -12,9 +12,16 @@
 		automaticSearch,
 		scoreDisplay,
 		textToSearchDefaultSmallScreen,
-		textToSearchDefault
+		textToSearchDefault,
+		useAdditionalConditions,
+		contentBeforeTable
 	} from './config.js';
+	import {
+		searchFunction,
+		occurrencesMultiples
+	} from './searchFunctions.js'
 	import MarkResults from './MarkResults.svelte';
+	import AdditionalConditions from './AdditionalConditions.svelte';
 	export let dataParsed;
 	export let textToSearch;
 	let dataTable;
@@ -29,8 +36,12 @@
 	if (reorganizeData || (reorganizeDataIfSmallScreen && innerWidth <= 800)) {
 		dataArray = reorganizeDataFunction(dataArray);
 	}
-	if (innerWidth <=600) {textToSearch=textToSearchDefaultSmallScreen;}
-	if (innerWidth >600 && automaticSearch == true) {textToSearch=textToSearchDefault;}
+	if (innerWidth <= 600) {
+		textToSearch = textToSearchDefaultSmallScreen;
+	}
+	if (innerWidth > 600 && automaticSearch == true) {
+		textToSearch = textToSearchDefault;
+	}
 	if (dataNoHeader == false) {
 		headers = dataArray.shift();
 		if (changeHeader) {
@@ -44,114 +55,63 @@
 	let pattern = '';
 	let regex;
 	let previoustextToSearch;
+	let rowsFiltered = [];
+	let rowsFilteredAndSorted = [];
 
 	function sortColumnOnClick(i) {
 		if (historyColumnsClick.includes(i)) {
 			const index = historyColumnsClick.indexOf(i);
 			historyColumnsClick.splice(index, 1);
-			/* setTimeout(function () { */
 			rows = rows.sort((a, b) => b[i].toString().localeCompare(a[i].toString(), "fr", {
 				numeric: true
 			}));
-			/* },5) */
 		} else {
-			/* setTimeout(function () { */
 			rows = rows.sort((a, b) => a[i].toString().localeCompare(b[i].toString(), "fr", {
 				numeric: true
 			}));
 			historyColumnsClick.push(i);
-			/* },5) */
 		}
 		sortColumns = true;
 	}
-
-	function searchFunction(string, itemsToSearch) {
-		return itemsToSearch.every((v) => string.includes(v));
-	}
-
-	/** Function that count occurrences of a substring in a string;
-	 * @param {String} string               The string
-	 * @param {String} subString            The sub string to search for
-	 * @param {Boolean} [allowOverlapping]  Optional. (Default:false)
-	 *
-	 * @author Vitim.us https://gist.github.com/victornpb/7736865
-	 * @see Unit Test https://jsfiddle.net/Victornpb/5axuh96u/
-	 * @see https://stackoverflow.com/a/7924240/938822
-	 */
-	function occurrences(string, subString, allowOverlapping) {
-
-		string += "";
-		subString += "";
-		if (subString.length <= 0) return (string.length + 1);
-
-		var n = 0,
-			pos = 0,
-			step = allowOverlapping ? 1 : subString.length;
-
-		while (true) {
-			pos = string.indexOf(subString, pos);
-			if (pos >= 0) {
-				++n;
-				pos += step;
-			} else break;
-		}
-		return n;
-	}
-
-	function occurencesMultiples(arr, string) {
-		return (arr.reduce(function (accumulator, currentValue) {
-			const occurencesNumber = occurrences(string, currentValue, false);
-			return accumulator + occurencesNumber;
-		}, 0));
-	}
-
-	let rowsFiltered = []
-	let rowsFilteredAndSorted = []
 
 	$: if (textToSearch !== '' && previoustextToSearch !== textToSearch) {
 		pattern = '';
 		search_items = textToSearch.toLowerCase().split("+");
 		if (desactivateRegexDefault === false) {
-			search_items.forEach((search_item) => {
+			for (const search_item of search_items) {
 				pattern = pattern + "(?=.*" + search_item + ")";
-			});
-			
+			}
 			try {
 				regex = new RegExp(pattern, 'i');
-				/* setTimeout(function () { */
-				rows = dataArray.filter((row) => row.toString().toLowerCase().match(regex));
+				rows = dataArray.filter((row) => row.join('\t').toLowerCase().match(regex));
 				previoustextToSearch = textToSearch;
-				/* }, 5) */
 			} catch (e) {
 				console.log("Invalid Regular Expression");
 				textToSearch == '';
 			}
 		} else {
-			/* rows = dataArray.filter((row) => searchFunction(row.toString().toLowerCase(), search_items)); */
 			setTimeout(function () {
 				rows = dataArray;
 				for (const row of rows) {
-					const searchResults = searchFunction(row.toString().toLowerCase(), search_items)
+					const searchResults = searchFunction(row.join('\\t').toLowerCase(), search_items);
 					if (searchResults) {
-						rowsFiltered = [...rowsFiltered, row]
+						rowsFiltered = [...rowsFiltered, row];
 					}
 				}
 				if (scoreDisplay === true) {
 					for (const row of rowsFiltered) {
-						const score = occurencesMultiples(search_items, row.toString().toLowerCase());
+						const score = occurrencesMultiples(search_items, row.join('\\t').toLowerCase());
 						const rowN = [...row, score];
 						rowsFilteredAndSorted = [...rowsFilteredAndSorted, rowN];
 					}
 					rowsFilteredAndSorted = rowsFilteredAndSorted.sort((a, b) => {
 						return b[headersLength] -
-							a[headersLength]
+							a[headersLength];
 					})
-					rows = rowsFilteredAndSorted
+					rows = rowsFilteredAndSorted;
 				} else {
-					rows = rowsFiltered
+					rows = rowsFiltered;
 				}
-
-
 				/* rows = rowsFilteredAndSorted.map(function (val) {
 					return val.slice(0, -1);
 				}); */
@@ -166,6 +126,14 @@
 		}
 	}
 </script>
+
+{#if useAdditionalConditions == true}
+	<div class="additionalConditions">
+		<AdditionalConditions bind:textToSearch/>
+	</div>
+{/if}
+
+<div class="contentBeforeTable">{@html contentBeforeTable}</div>
 
 <table class:one-column="{headersLength===1}" class="{tableCSS}">
 	{#if headers}	
@@ -188,7 +156,7 @@
 				<tr><td colspan="{headersLength}"><p><span class="loader"></span></p><p class="info-search">Recherche en cours</p></td></tr>
 			{:else}
 				{#if innerWidth <=600 && textToSearch==textToSearchDefaultSmallScreen && automaticSearch === true}
-					<tr><td colspan="{headersLength}" class="info-search">Sur un petit écran, seule une partie des données s'affiche par défaut. Utilisez le moteur de recherche ci-dessus pour trouver ce qui vous intéresse.</td></tr>
+					<tr><td colspan="{headersLength}" class="info-search">Sur un petit écran, seule une partie des données s'affiche par défaut. Utilisez le moteur de recherche ci-dessus pour trouver ce qui vous intéresse, ou cliquez sur : <button on:click={()=>textToSearch=''}>Voir toutes les données</button></td></tr>
 				{/if}
 				{#if innerWidth>600 && automaticSearch === true && textToSearch==textToSearchDefault}
 					<tr><td colspan="{headersLength}" class="info-search"><strong>Par défaut, seule une partie des données s'affiche.</strong><br/>Utilisez le moteur de recherche ci-dessus  pour trouver ce qui vous intéresse.
@@ -218,7 +186,7 @@
 		border-collapse: separate;
 		border-spacing: 0;
 		border: 2px solid #6a0012;
-		margin: 50px auto;
+		margin: 1em auto;
 		border-radius: .25rem;
 		table-layout: auto;
 		width: 95%;
@@ -292,5 +260,19 @@
 	.info-search {
 		text-align:center;
 		padding:2em!important;
+	}
+
+	.additionalConditions, .contentBeforeTable {
+		max-width: 960px;
+		margin: auto;
+		width: 80%;
+		text-align: center;
+		font-size: 0.9em;
+	}
+
+	.contentBeforeTable {
+		font-size:0.8em;
+		margin-top:3em;
+		margin-bottom:4em;
 	}
 </style>
