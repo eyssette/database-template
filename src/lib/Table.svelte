@@ -13,7 +13,8 @@
 		scoreDisplay,
 		textToSearchDefaultSmallScreen,
 		textToSearchDefault,
-		useAdditionalConditions
+		useAdditionalConditions,
+		smallColumns
 	} from './config.js';
 	import {
 		searchFunction,
@@ -162,8 +163,8 @@
 				{#if rows.length !=0}
 					{#each rows as row}
 						<tr>
-							{#each row as cell}
-								<td>{@html cell}</td>
+							{#each row as cell,i}
+								<td class:small="{smallColumns.includes(i+1)}">{@html cell}</td>
 							{/each}
 						</tr>
 					{/each}
@@ -250,7 +251,11 @@
 		padding-right: 5vw;
 	}
 
-	.small {
+	td.small {
+		font-size:0.9em;
+	}
+
+	table.small {
 		max-width: 800px!important;
 	}
 

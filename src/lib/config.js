@@ -33,6 +33,9 @@ export const newHeader = [];
 /* export const newHeader=['Auteur·e','Texte']; */
 /* export const newHeader = ['Intitulé du sujet']; */
 
+/* Pour que certaines colonnes s'affichent en plus petit */
+export const smallColumns = [3,4]
+
 /* Surligner les mots recherchés */
 export const markText = true;
 
