@@ -14,6 +14,7 @@
 	onMount(() => {
 		hash = window.location.hash;
 		if (hash) {
+			inputValue = hash.slice(1).split('$')[0];
 			textToSearch = hash.slice(1);
 		}
 	});
