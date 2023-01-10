@@ -33,7 +33,6 @@
 	}
 
 	const dataParsed = fetchCsv();
-
 </script>
 
 <h1>{title}</h1>
@@ -63,7 +62,8 @@
 		margin-top: 1em;
 	}
 
-	.search, footer {
+	.search,
+	footer {
 		max-width: 960px;
 		margin: auto;
 		width: 80%;
@@ -72,10 +72,10 @@
 	}
 
 	footer {
-		text-align:justify;
-		font-size:1em;
-		margin-bottom:3em;
-		max-width: 800px!important;
+		text-align: justify;
+		font-size: 1em;
+		margin-bottom: 3em;
+		max-width: 800px !important;
 	}
 
 	:global(.loader) {

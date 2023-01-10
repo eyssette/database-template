@@ -13,8 +13,8 @@ export const automaticSearch = true;
 export const desactivateRegexDefault = false;
 export const scoreDisplay = false;
 
-export const textToSearchDefaultSmallScreen='2022\t';
-export const textToSearchDefault='2022\t';
+export const textToSearchDefaultSmallScreen = '2022\t';
+export const textToSearchDefault = '2022\t';
 
 /* Pour réorganiser les données (notamment pour faire une version différente sur mobile) */
 export const reorganizeData = false;
@@ -34,8 +34,8 @@ export const newHeader = [];
 /* export const newHeader = ['Intitulé du sujet']; */
 
 /* Pour que certaines colonnes s'affichent en plus petit */
-export const smallColumns = [3,4]
-export const smallColumnsIfSmallScreen = [2]
+export const smallColumns = [3, 4]
+export const smallColumnsIfSmallScreen = [2];
 
 /* Surligner les mots recherchés */
 export const markText = true;

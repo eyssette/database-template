@@ -20,7 +20,7 @@
 	import {
 		searchFunction,
 		occurrencesMultiples
-	} from './searchFunctions.js'
+	} from './searchFunctions.js';
 	import MarkResults from './MarkResults.svelte';
 	import AdditionalConditions from './AdditionalConditions.svelte';
 	export let dataParsed;
@@ -139,7 +139,7 @@
 		<thead>
 			<tr>
 				{#each headers as header, i}
-						<th data-key="{header}" on:click={() => sortColumnOnClick(i)}>{@html header}</th>
+					<th data-key="{header}" on:click={() => sortColumnOnClick(i)}>{@html header}</th>
 				{/each}
 				{#if scoreDisplay === true && automaticSearch === false}
 					<th on:click={() => sortColumnOnClick(headersLength)}>Score</th>
@@ -149,17 +149,27 @@
 	{/if}
 	<tbody bind:this={dataTable}>
 		{#if desactivateRegexDefault==true && textToSearch==''}
-			<tr><td colspan="{headersLength}" class="info-search">Utilisez l'outil de recherche ci-dessus : les textes qui correspondent à la recherche s'afficheront ci-dessous</td></tr>
+			<tr>
+				<td colspan="{headersLength}" class="info-search">Utilisez l'outil de recherche ci-dessus : les textes qui correspondent à la recherche s'afficheront ci-dessous</td>
+			</tr>
 		{:else}
 			{#if previoustextToSearch != textToSearch && automaticSearch === false}
-				<tr><td colspan="{headersLength}"><p><span class="loader"></span></p><p class="info-search">Recherche en cours</p></td></tr>
+				<tr>
+					<td colspan="{headersLength}">
+						<p><span class="loader"></span></p>
+						<p class="info-search">Recherche en cours</p>
+					</td>
+				</tr>
 			{:else}
 				{#if innerWidth <=600 && textToSearch==textToSearchDefaultSmallScreen && automaticSearch === true}
-					<tr><td colspan="{headersLength}" class="info-search">Sur un petit écran, seule une partie des données s'affiche par défaut. Utilisez le moteur de recherche ci-dessus pour trouver ce qui vous intéresse, ou cliquez sur : <button on:click={()=>textToSearch=''}>Voir toutes les données</button></td></tr>
+					<tr>
+						<td colspan="{headersLength}" class="info-search">Sur un petit écran, seule une partie des données s'affiche par défaut. Utilisez le moteur de recherche ci-dessus pour trouver ce qui vous intéresse, ou cliquez sur : <button on:click={()=>textToSearch=''}>Voir toutes les données</button></td>
+					</tr>
 				{/if}
 				{#if innerWidth>600 && automaticSearch === true && textToSearch==textToSearchDefault}
-					<tr><td colspan="{headersLength}" class="info-search"><strong>Par défaut, seule une partie des données s'affiche.</strong><br/>Utilisez le moteur de recherche ci-dessus  pour trouver ce qui vous intéresse.
-					<br>Ou cliquez sur : <button on:click={()=>textToSearch=''}>Voir toutes les données</button></td></tr>
+					<tr>
+						<td colspan="{headersLength}" class="info-search"><strong>Par défaut, seule une partie des données s'affiche.</strong><br />Utilisez le moteur de recherche ci-dessus pour trouver ce qui vous intéresse. <br>Ou cliquez sur : <button on:click={()=>textToSearch=''}>Voir toutes les données</button></td>
+					</tr>
 				{/if}
 				{#if rows.length !=0}
 					{#each rows as row}
@@ -170,7 +180,9 @@
 						</tr>
 					{/each}
 				{:else}
-					<tr><td colspan="{headersLength}" class="info-search">Aucun résultat trouvé</td></tr>
+					<tr>
+						<td colspan="{headersLength}" class="info-search">Aucun résultat trouvé</td>
+					</tr>
 				{/if}
 			{/if}
 		{/if}
@@ -197,6 +209,7 @@
 		cursor: pointer;
 		font-weight: 600;
 	}
+
 	th:after {
 		content: "↕";
 		font-size: 0.7em;
@@ -253,16 +266,16 @@
 	}
 
 	td.small {
-		font-size:0.9em;
+		font-size: 0.9em;
 	}
 
 	table.small {
-		max-width: 800px!important;
+		max-width: 800px !important;
 	}
 
 	.info-search {
-		text-align:center;
-		padding:2em!important;
+		text-align: center;
+		padding: 2em !important;
 	}
 
 	.additionalConditions {
@@ -271,12 +284,12 @@
 		width: 80%;
 		text-align: center;
 		font-size: 0.9em;
-		margin-bottom:3em;
+		margin-bottom: 3em;
 	}
 
 	@media screen and (max-width:600px) {
 		table {
-			font-size:0.9em;
+			font-size: 0.9em;
 		}
 	}
 </style>
