@@ -1,7 +1,8 @@
 <script>
 	import {
 		automaticSearch,
-		useAdditionalConditions
+		useAdditionalConditions,
+		desactivateRegexDefault
 	} from './config.js';
 	import {
 		onMount
@@ -23,7 +24,13 @@
 	});
 
 	function searchDatabase() {
-		textToSearch = inputValue;
+		if (automaticSearch == true && desactivateRegexDefault == false) {
+			setTimeout(() => {
+				textToSearch = inputValue;
+			}, 300);
+		} else {
+			textToSearch = inputValue;
+		}
 	}
 
 	function copyURL() {
