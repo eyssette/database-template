@@ -24,12 +24,16 @@
 				search_items = text.split("(")[0].split('+');
 			}
 			search_items.forEach((search_item, index) => {
-				markInstance.mark(search_item.replace("^", ""), {
+				search_item=search_item.replaceAll(".*","")
+				search_item.split('\\t').forEach((item) => {
+					markInstance.mark(item.replaceAll("^", "").replaceAll(".?","?").replaceAll(".*","*"), {
 					"element": "span",
 					"className": "match" + (index+1),
 					"accuracy": "complementary",
-					"separateWordSearch": false
+					"separateWordSearch": false,
+					"wildcards": "enabled"
 				});
+				})
 			});
 		}
 	}
