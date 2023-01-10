@@ -23,7 +23,7 @@
 	}
 </script>
 
-<label for="search">Rechercher dans le sujet :</label>
+<label for="search">Rechercher :</label>
 {#if automaticSearch == true}
 	<input type="text" id="search" name="search" bind:value={inputValue} on:input={searchDatabase}>
 {:else}

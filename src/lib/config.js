@@ -42,8 +42,9 @@ export const tableCSS = '';
 /* export let tableCSS='small' */
 
 /* Pour indiquer des conditions supplémentaires possibles (cases à cocher) avec le format suivant : intitulé de la condition, regex correspondante */
-export const useAdditionalConditions = false;
+export const useAdditionalConditions = true;
 export const additionalConditionsArray = [
-	['Seulement des sujets avec une question', '(?=.*\\?$)'],
-	['Seulement des sujets sans question', '(?=.*([A-zÀ-ÿ]|»|\\)|[0-9]|!|>)$)']
+	/* ['Seulement des sujets avec une question', '(?=.*\\?$)'],
+	['Seulement des sujets sans question', '(?=.*([A-zÀ-ÿ]|»|\\)|[0-9]|!|>)$)'], */
+	['Rechercher seulement dans les intitulés des sujets', '(?<=.*?\\t.*?\\t.*?\\t.*?\\t.*)']
 ];

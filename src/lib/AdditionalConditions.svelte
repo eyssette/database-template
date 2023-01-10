@@ -7,7 +7,7 @@
 	$: additionalConditionsArray.forEach(
 		(condition, index) => {
 			if (conditionChecked[index] == true) {
-				textToSearch = textToSearch + condition[1];
+				if (textToSearch!='2022\t') {textToSearch = textToSearch + condition[1];}
 			} else {
 				textToSearch = textToSearch.replace(condition[1], '');
 			}

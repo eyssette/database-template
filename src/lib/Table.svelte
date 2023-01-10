@@ -126,7 +126,7 @@
 	}
 </script>
 
-{#if useAdditionalConditions == true}
+{#if useAdditionalConditions == true && desactivateRegexDefault == false}
 	<div class="additionalConditions">
 		<AdditionalConditions bind:textToSearch/>
 	</div>
