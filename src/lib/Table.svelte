@@ -13,8 +13,7 @@
 		scoreDisplay,
 		textToSearchDefaultSmallScreen,
 		textToSearchDefault,
-		useAdditionalConditions,
-		contentBeforeTable
+		useAdditionalConditions
 	} from './config.js';
 	import {
 		searchFunction,
@@ -133,8 +132,6 @@
 	</div>
 {/if}
 
-<div class="contentBeforeTable">{@html contentBeforeTable}</div>
-
 <table class:one-column="{headersLength===1}" class="{tableCSS}">
 	{#if headers}	
 		<thead>
@@ -186,7 +183,7 @@
 		border-collapse: separate;
 		border-spacing: 0;
 		border: 2px solid #6a0012;
-		margin: 1em auto;
+		margin: 3em auto;
 		border-radius: .25rem;
 		table-layout: auto;
 		width: 95%;
@@ -254,7 +251,7 @@
 	}
 
 	.small {
-		max-width: 800px;
+		max-width: 800px!important;
 	}
 
 	.info-search {
@@ -262,17 +259,12 @@
 		padding:2em!important;
 	}
 
-	.additionalConditions, .contentBeforeTable {
+	.additionalConditions {
 		max-width: 960px;
 		margin: auto;
 		width: 80%;
 		text-align: center;
 		font-size: 0.9em;
-	}
-
-	.contentBeforeTable {
-		font-size:0.8em;
-		margin-top:3em;
-		margin-bottom:4em;
+		margin-bottom:3em;
 	}
 </style>

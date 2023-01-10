@@ -5,7 +5,8 @@
 	import {
 		title,
 		src,
-		dataNoHeader
+		dataNoHeader,
+		contentAfterTable
 	} from '../lib/config.js';
 	let textToSearch = '';
 	let parsedData = [];
@@ -45,6 +46,7 @@
 		<Search bind:textToSearch/>
 	</div>
 	<Table {dataParsed} bind:textToSearch />
+	<footer class="contentAfterTable">{@html contentAfterTable}</footer>
 {:catch error}
 	<p style="color: red">{error.message}</p>
 {/await}
@@ -61,12 +63,19 @@
 		margin-top: 1em;
 	}
 
-	.search {
+	.search, footer {
 		max-width: 960px;
 		margin: auto;
 		width: 80%;
 		text-align: center;
 		font-size: 0.9em;
+	}
+
+	footer {
+		text-align:justify;
+		font-size:1em;
+		margin-bottom:3em;
+		max-width: 800px!important;
 	}
 
 	:global(.loader) {

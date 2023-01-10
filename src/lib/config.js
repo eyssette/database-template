@@ -6,15 +6,15 @@ export const src = ['https://raw.githubusercontent.com/eyssette/sujets-philosoph
 /* https://raw.githubusercontent.com/eyssette/sujets-philosophie-bac/main/data/dissertations.tsv */
 /* export const src = ['https://raw.githubusercontent.com/eyssette/sujets-philosophie/main/data/sujets-vrac.tsv'] */
 
-export const contentBeforeTable = 'Site créé par <a href="http://eyssette.github.io/">Cédric Eyssette</a> à partir du travail de François Elie : <a href="https://philo-labo.fr/sujets/">https://philo-labo.fr/sujets/</a>';
+export const contentAfterTable = 'Site créé par <a href="http://eyssette.github.io/">Cédric Eyssette</a> à partir du travail de François Elie : <a href="https://philo-labo.fr/sujets/">https://philo-labo.fr/sujets/</a>';
 
 /* Si la base de données est trop importante, il faut que la recherche ne se déclenche pas automatiquement, mais seulement en appuyant sur Entrée, et il faut désactiver l'utilisation d'une regex. On peut également choisir de calculer un score de pertinence ou non. */
 export const automaticSearch = true;
 export const desactivateRegexDefault = false;
 export const scoreDisplay = false;
 
-export const textToSearchDefaultSmallScreen='202.\t';
-export const textToSearchDefault='';
+export const textToSearchDefaultSmallScreen='2022\t';
+export const textToSearchDefault='2022\t';
 
 /* Pour réorganiser les données (notamment pour faire une version différente sur mobile) */
 export const reorganizeData = false;
