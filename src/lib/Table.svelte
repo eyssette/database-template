@@ -71,7 +71,6 @@
 		return initialString.substring(0, pos) + stringToAdd + initialString.substring(pos)
 	}
 
-
 	$: if (activateFilters == true && desactivateRegexDefault == false) {
 		/* Si on arrive sur la page via un lien avec un hash, il faut remplir les filtres avec les informations du hash */
 		let textFromTextToSearch = textToSearch;
@@ -217,7 +216,7 @@
 				<td colspan="{headersLength}" class="info-search">Utilisez l'outil de recherche ci-dessus : les textes qui correspondent à la recherche s'afficheront ci-dessous</td>
 			</tr>
 		{:else}
-			{#if previoustextToSearch != textToSearch }
+			{#if previoustextToSearch != textToSearch && textToSearch!=''}
 				<tr>
 					<td colspan="{headersLength}">
 						<p><span class="loader"></span></p>
