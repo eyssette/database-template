@@ -15,7 +15,8 @@
 		textToSearchDefault,
 		useAdditionalConditions,
 		smallColumns,
-		smallColumnsIfSmallScreen
+		smallColumnsIfSmallScreen,
+		activateFilters
 	} from './config.js';
 	import {
 		searchFunction,
@@ -58,6 +59,62 @@
 	let previoustextToSearch;
 	let rowsFiltered = [];
 	let rowsFilteredAndSorted = [];
+	let filters = [];
+	let baseFilterRegex = '++(?=';
+	for (let index = 0; index < headersLength - 1; index++) {
+		baseFilterRegex = baseFilterRegex + '.*\\t'
+	}
+	baseFilterRegex = baseFilterRegex + '.*)';
+	let filter = '';
+
+	function insertAt(initialString, stringToAdd, pos) {
+		return initialString.substring(0, pos) + stringToAdd + initialString.substring(pos)
+	}
+
+
+	$: if (activateFilters == true && desactivateRegexDefault == false) {
+		/* Si on arrive sur la page via un lien avec un hash, il faut remplir les filtres avec les informations du hash */
+		let textFromTextToSearch = textToSearch;
+		let hashFiltersArray = textFromTextToSearch.split('\+\+\(\?='); /* Les deux + sont nécessaires pour ne pas entrer en conflit avec d'éventuelles regex dans les conditions supplémentaires */
+		let hashFiltersArrayFinal = Array(hashFiltersArray.length);
+		hashFiltersArray.shift();
+		if (textToSearch != textToSearchDefault && hashFiltersArray.length != 0) {
+			hashFiltersArray.forEach(hashFiltersRaw => {
+				let hashFiltersRawArray;
+				if (hashFiltersRaw) {
+					hashFiltersRawArray = hashFiltersRaw.split('.*\\t');
+					hashFiltersRawArray.forEach((hash, index) => {
+						if (hash != '') {
+							hashFiltersArrayFinal[index] = hash
+						}
+					})
+				}
+			})
+			if (filters.length == 0) {
+				for (let index = 0; index < headersLength; index++) {
+					if (hashFiltersArrayFinal[index] != '') {
+						let hashFilter = hashFiltersArrayFinal[index];
+						if (hashFilter) {
+							hashFilter = hashFilter.replace('.*)', '').replace('.*', '');
+							filters[index] = hashFilter;
+						}
+					}
+				}
+			}
+		}
+		if (filters.length != 0) {
+			textToSearch = textToSearch.replace(/\+\+\(\?\=.*/g, '')
+		}
+		/* On ajoute à textToSearch une Regex qui force à chercher un élément à une position bien précise dans le tableau */
+		for (let index = 0; index < headersLength; index++) {
+			if (typeof (filters[index]) == 'string' && filters[index] != '') {
+				filter = insertAt(baseFilterRegex, '.*' + filters[index], 1 + (4 * (index + 1)));
+				textToSearch = textToSearch + filter;
+			}
+		}
+
+		filter = '';
+	}
 
 	function sortColumnOnClick(i) {
 		if (historyColumnsClick.includes(i)) {
@@ -145,6 +202,13 @@
 					<th on:click={() => sortColumnOnClick(headersLength)}>Score</th>
 				{/if}
 			</tr>
+			{#if innerWidth > 600 && activateFilters==true && desactivateRegexDefault==false && headersLength>1}
+				<tr class="filters">
+					{#each headers as header, i}
+						<td><input type="text" id="filter-{i}" name="filter-{i}" bind:value={filters[i]} placeholder="filtre"></td>
+					{/each}
+				</tr>
+			{/if}
 		</thead>
 	{/if}
 	<tbody bind:this={dataTable}>
@@ -153,7 +217,7 @@
 				<td colspan="{headersLength}" class="info-search">Utilisez l'outil de recherche ci-dessus : les textes qui correspondent à la recherche s'afficheront ci-dessous</td>
 			</tr>
 		{:else}
-			{#if previoustextToSearch != textToSearch && automaticSearch === false}
+			{#if previoustextToSearch != textToSearch }
 				<tr>
 					<td colspan="{headersLength}">
 						<p><span class="loader"></span></p>
@@ -285,6 +349,19 @@
 		text-align: center;
 		font-size: 0.9em;
 		margin-bottom: 3em;
+	}
+
+	.filters{
+		font-size:0.7em;
+		height:0.7em
+	}
+
+	td input {
+		border: 1px solid #DDD;
+		color: #333;
+	}
+	td input::placeholder {
+		color:#666;
 	}
 
 	@media screen and (max-width:600px) {

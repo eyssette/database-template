@@ -13,6 +13,8 @@ export const automaticSearch = true;
 export const desactivateRegexDefault = false;
 export const scoreDisplay = false;
 
+export const activateFilters = true;
+
 export const textToSearchDefaultSmallScreen = '2022\t';
 export const textToSearchDefault = '2022\t';
 

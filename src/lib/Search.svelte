@@ -18,8 +18,8 @@
 		baseURL = window.location.origin + window.location.pathname;
 		hash = window.location.hash;
 		if (hash) {
-			inputValue = hash.slice(1).split('&')[0];
-			textToSearch = hash.slice(1);
+			inputValue = decodeURI(hash.slice(1).split('&')[0].replace(/\+\+\(\?=.*/,''));
+			textToSearch = decodeURI(hash.slice(1));
 		}
 	});
 
