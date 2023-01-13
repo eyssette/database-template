@@ -74,7 +74,7 @@
 	$: if (activateFilters == true && desactivateRegexDefault == false) {
 		/* Si on arrive sur la page via un lien avec un hash, il faut remplir les filtres avec les informations du hash */
 		let textFromTextToSearch = textToSearch;
-		let hashFiltersArray = textFromTextToSearch.split('\+\+\(\?='); /* Les deux + sont nécessaires pour ne pas entrer en conflit avec d'éventuelles regex dans les conditions supplémentaires */
+		let hashFiltersArray = textFromTextToSearch.split('\+\+\(\?='); /* Les deux “+” sont nécessaires pour ne pas entrer en conflit avec d'éventuelles regex dans les conditions supplémentaires */
 		let hashFiltersArrayFinal = Array(hashFiltersArray.length);
 		hashFiltersArray.shift();
 		if (textToSearch != textToSearchDefault && hashFiltersArray.length != 0) {
