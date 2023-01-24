@@ -24,6 +24,7 @@
 			const parse = Papa.parse(csvData, {
 				delimiter: '\t',
 				fastMode: true,
+				comments: '# '
 			}).data;
 			dataNoHeader ? headers = [] : headers = parse.shift();
 			parsedData = [...parsedData, ...parse];
