@@ -146,16 +146,19 @@
 	$: if (textToSearch !== "" && previoustextToSearch !== textToSearch) {
 		pattern = "";
 		search_items = textToSearch.toLowerCase().split("+");
+		/* const start = Date.now(); */
 		if (desactivateRegexDefault === false) {
 			for (const search_item of search_items) {
-				pattern = pattern + "(?=.*" + search_item + ")";
+				pattern = pattern + "(?=.*?" + search_item + ")";
 			}
 			try {
 				regex = new RegExp(pattern, "i");
 				rows = dataArray.filter((row) =>
-					row.join("\t").toLowerCase().match(regex)
+					row.join("\t").match(regex)
 				);
 				previoustextToSearch = textToSearch;
+				/* const end = Date.now();
+				console.log(`Execution time: ${end - start} ms`); */
 			} catch (e) {
 				console.log("Invalid Regular Expression");
 				textToSearch == "";
@@ -245,7 +248,7 @@
 			</tr>
 		{:else if previoustextToSearch != textToSearch && textToSearch != ""}
 			<tr>
-				<td colspan={headersLength}>
+				<td colspan={scoreDisplay ? headersLength+1 : headersLength}>
 					<p><span class="loader" /></p>
 					<p class="info-search">Recherche en cours</p>
 				</td>
